@@ -12,7 +12,14 @@ const products = [
 
 function TextExample() {
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        maxWidth: "100vw",
+      }}
+    >
       {products.map((product, index) => (
         <Card key={index} style={{ width: "18rem", margin: "10px" }}>
           <Card.Body>
@@ -20,9 +27,32 @@ function TextExample() {
             <Card.Text style={{ maxHeight: "100px", overflow: "hidden" }}>
               {product.text}
             </Card.Text>
-            <Card.Link href="#">View Text</Card.Link>
-            <Card.Link href="#">Copy Text</Card.Link>
           </Card.Body>
+          <Card.Footer
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Card.Link href="#" style={{ color: "black" }}>
+              Expand
+            </Card.Link>
+            <Card.Link href="#">
+              <i
+                className="fa-regular fa-copy fa-1x"
+                style={{ color: "#000000" }}
+              ></i>
+            </Card.Link>
+            <Card.Link href="#">
+              <i
+                className="fa-regular fa-pen-to-square"
+                style={{ color: "#000000" }}
+              ></i>
+            </Card.Link>
+            <Card.Link href="#">
+              <i
+                className="fa-regular fa-trash-can"
+                style={{ color: "#000000" }}
+              ></i>
+            </Card.Link>
+          </Card.Footer>
         </Card>
       ))}
     </div>
