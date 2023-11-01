@@ -1,4 +1,7 @@
 import Card from "react-bootstrap/Card";
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 const products = [
   { title: "cool code", text: "print(hello world)" },
@@ -11,6 +14,20 @@ const products = [
 ];
 
 function TextExample() {
+  const [showModal, setShowModal] = useState(false);
+  const [modalText, setModalText] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+
+  const handleExpandClick = (title, text) => {
+    setModalTitle(title);
+    setModalText(text);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div
       style={{
@@ -31,7 +48,11 @@ function TextExample() {
           <Card.Footer
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <Card.Link href="#" style={{ color: "black" }}>
+            <Card.Link
+              href="#"
+              style={{ color: "black" }}
+              onClick={() => handleExpandClick(product.title, product.text)}
+            >
               Expand
             </Card.Link>
             <Card.Link href="#">
@@ -55,6 +76,12 @@ function TextExample() {
           </Card.Footer>
         </Card>
       ))}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalText}</Modal.Body>
+      </Modal>
     </div>
   );
 }
