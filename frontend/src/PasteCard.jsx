@@ -1,15 +1,68 @@
 import Card from "react-bootstrap/Card";
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import ExpandedModal from "./ExpandedModal";
 
 const products = [
   { title: "cool code", text: "print(hello world)" },
   { title: "groceries", text: "apples, chicken, pasta, green beans" },
   { title: "recipe", text: "10tbs salt, preheat oven to 450" },
   {
-    title: "Lorem ipsum ",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    title: "Lorem ipsum",
+    text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi
+ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in
+voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident,
+sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+  },
+  {
+    title: "packages",
+    text: `{
+    "name": "frontend",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@codemirror/lang-javascript": "^6.2.1",
+      "@testing-library/jest-dom": "^5.17.0",
+      "@testing-library/react": "^13.4.0",
+      "@testing-library/user-event": "^13.5.0",
+      "@uiw/react-codemirror": "^4.21.20",
+      "bootstrap": "^5.3.2",
+      "font-awesome": "^4.7.0",
+      "react": "^18.2.0",
+      "react-bootstrap": "^2.9.1",
+      "react-dom": "^18.2.0",
+      "react-scripts": "5.0.1",
+      "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }`,
   },
 ];
 
@@ -76,12 +129,12 @@ function TextExample() {
           </Card.Footer>
         </Card>
       ))}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalTitle}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{modalText}</Modal.Body>
-      </Modal>
+      <ExpandedModal
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+      />
     </div>
   );
 }
