@@ -1,14 +1,18 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Navbar";
-import PasteCard from "./PasteCard";
-import CreateButton from "./CreateButton";
+import { Route, Routes } from "react-router-dom";
+import TxtDump from "./TxtDump";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
 export default function Main() {
   return (
-    <div>
-      <Navbar></Navbar>
-      <CreateButton></CreateButton>
-      <PasteCard></PasteCard>
-    </div>
+    <Routes>
+      <Route element={<Navbar />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/" element={<TxtDump />} />
+      </Route>
+    </Routes>
   );
 }
