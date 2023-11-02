@@ -1,10 +1,22 @@
 import Card from "react-bootstrap/Card";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExpandedModal from "./ExpandedModal";
+import Button from "react-bootstrap/Button";
+import CodeMirror from "@uiw/react-codemirror";
+import Alert from "react-bootstrap/Alert";
 
 const products = [
-  { title: "cool code", text: "print(hello world)" },
-  { title: "groceries", text: "apples, chicken, pasta, green beans" },
+  { title: "auth codes", text: "1234-2344" },
+  {
+    title: "groceries",
+    text: `apples
+    potatoes
+    tortilla
+    lean ground beef
+    shampoo
+    eggs
+    flour`,
+  },
   { title: "recipe", text: "10tbs salt, preheat oven to 450" },
   {
     title: "Lorem ipsum",
@@ -70,6 +82,9 @@ function TextExample() {
   const [showModal, setShowModal] = useState(false);
   const [modalText, setModalText] = useState("");
   const [modalTitle, setModalTitle] = useState("");
+  const [alertVariant, setAlertVariant] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const handleExpandClick = (title, text) => {
     setModalTitle(title);
@@ -81,6 +96,33 @@ function TextExample() {
     setShowModal(false);
   };
 
+  const handleCopyClick = (textToCopy) => {
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        setAlertVariant("success");
+        setAlertMessage("Text copied to clipboard");
+        setAlertVisible(true);
+      })
+      .catch((err) => {
+        setAlertVariant("danger");
+        setAlertMessage("Copy failed: " + err.message);
+        setAlertVisible(true);
+      });
+  };
+
+  useEffect(() => {
+    if (alertVisible) {
+      const timeoutId = setTimeout(() => {
+        setAlertVisible(false);
+      }, 3000); // in ms
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [alertVisible]);
+
   return (
     <div
       style={{
@@ -90,36 +132,54 @@ function TextExample() {
         maxWidth: "100vw",
       }}
     >
+      {alertVisible && (
+        <div className="position-absolute" style={{ top: "10px", zIndex: 999 }}>
+          <Alert
+            variant={alertVariant}
+            onClose={() => setAlertVisible(false)}
+            dismissible
+          >
+            {alertMessage}
+          </Alert>
+        </div>
+      )}
       {products.map((product, index) => (
-        <Card key={index} style={{ width: "18rem", margin: "10px" }}>
-          <Card.Body>
-            <Card.Title>{product.title}</Card.Title>
-            <Card.Text style={{ maxHeight: "100px", overflow: "hidden" }}>
-              {product.text}
-            </Card.Text>
+        <Card
+          key={index}
+          style={{ height: "16rem", width: "20rem", margin: "10px" }}
+        >
+          <Card.Header>{product.title}</Card.Header>
+          <Card.Body style={{ padding: 0, margin: 0 }}>
+            <CodeMirror
+              value={product.text}
+              height="10.3rem"
+              className="custom-codemirror"
+              options={{
+                // disable autocorrect and grammarly
+                spellcheck: false,
+                "data-gramm": "false",
+              }}
+            />
           </Card.Body>
+
           <Card.Footer
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <Card.Link
-              href="#"
-              style={{ color: "black" }}
+            <Button
               onClick={() => handleExpandClick(product.title, product.text)}
+              variant="outline-secondary"
+              size="sm"
             >
               Expand
-            </Card.Link>
+            </Button>
             <Card.Link href="#">
               <i
                 className="fa-regular fa-copy fa-1x"
                 style={{ color: "#000000" }}
+                onClick={() => handleCopyClick(product.text)}
               ></i>
             </Card.Link>
-            <Card.Link href="#">
-              <i
-                className="fa-regular fa-pen-to-square"
-                style={{ color: "#000000" }}
-              ></i>
-            </Card.Link>
+
             <Card.Link href="#">
               <i
                 className="fa-regular fa-trash-can"

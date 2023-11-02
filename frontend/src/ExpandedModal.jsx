@@ -20,9 +20,10 @@ const ModalComponent = ({
         <CodeMirror
           value={modalText}
           height="70vh"
-          extensions={[javascript({ jsx: true })]}
+          // extensions={[javascript({ jsx: true })]}
           options={{
             // disable autocorrect and grammarly
+            // mode: "text/plain",
             spellcheck: false,
             "data-gramm": "false",
           }}
