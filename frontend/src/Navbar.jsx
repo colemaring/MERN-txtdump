@@ -21,7 +21,7 @@ function HeaderBar() {
             type="submit"
             className="mx-2"
             onClick={() => {
-              navigate("login");
+              navigate("/login");
             }}
           >
             LOGIN
@@ -31,7 +31,7 @@ function HeaderBar() {
             type="submit"
             className="mx-2"
             onClick={() => {
-              navigate("sign-up");
+              navigate("/sign-up");
             }}
           >
             SIGN UP

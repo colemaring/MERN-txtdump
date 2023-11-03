@@ -9,10 +9,10 @@ export default function Main() {
   return (
     <Routes>
       <Route element={<Navbar />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/" element={<TxtDump />} />
       </Route>
+      <Route path="login" element={<Login />} />
+      <Route path="sign-up" element={<SignUp />} />
     </Routes>
   );
 }
