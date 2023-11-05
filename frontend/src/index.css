@@ -1,3 +1,14 @@
+:root {
+  --green: #198754;
+  --dark: #212529;
+  --gradient: linear-gradient(45deg, rgb(9, 82, 48), rgb(20, 120, 60), #198754, rgb(19, 109, 67), rgb(24, 179, 107),
+      rgb(26, 137, 85))
+}
+
+html {
+  height: 100vh;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +16,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
+  background-attachment: fixed;
 }
 
 code {
@@ -12,19 +25,34 @@ code {
     monospace;
 }
 
-.masthead {
+.overlay {
   min-height: 100vh;
-  position: relative;
+  width: 100%;
 }
 
-.overlay {
-  position: absolute;
+.bg-login {
   background-image: url("./assets/loginBackground.png");
-  background-color: rgba(0, 0, 0, 0);
-  height: 100%;
-  width: 100%;
-  mix-blend-mode: normal;
+  background-attachment: fixed;
+  background-position: center;
+
 }
+
+.bg-sign-up {
+  background-image: var(--gradient);
+  background-size: 400%;
+  animation: bg-sign-up-animation 8s infinite alternate;
+}
+
+@keyframes bg-sign-up-animation {
+  0% {
+    background-position: left;
+  }
+
+  100% {
+    background-position: right;
+  }
+}
+
 
 .form-control:focus {
   border-color: #28a745 !important;
@@ -32,22 +60,28 @@ code {
 }
 
 .website-title {
-  color: black;
+  color: var(--dark);
   font-size: 10rem;
   font-weight: 600;
-  text-shadow: -5px -5px #198754af;
+  text-shadow: -0.33rem -0.33rem #1a8754af;
   letter-spacing: 5px;
-}
-
-.login-text {
-  letter-spacing: 1px;
+  height: 220px;
 }
 
 @media only screen and (max-width: 991px) {
   .website-title {
     font-size: 5rem;
-    text-shadow: -3px -3px #198754af;
+    text-shadow: -0.17rem -0.17rem #198754af;
     padding-bottom: 20px;
     letter-spacing: 10px;
   }
+}
+
+.form-design {
+  width: 400px !important;
+  box-shadow: 0px 0px 16px 8px #25252593;
+}
+
+.spaced-text {
+  letter-spacing: 1px;
 }
