@@ -2,24 +2,17 @@ import Button from "react-bootstrap/Button";
 import React, { useState } from "react";
 import ExpandedModal from "./ExpandedModal";
 
-function MyButton() {
+function MyButton({ itemList, setitemList }) {
   const [showModal, setShowModal] = useState(false);
-  const [modalText, setModalText] = useState("");
-  const [modalTitle, setModalTitle] = useState("");
-
-  const handleExpandClick = (title, text) => {
-    setModalTitle(title);
-    setModalText(text);
-    setShowModal(true);
-  };
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   return (
     <div className="d-flex justify-content-center my-4">
       <Button
-        onClick={() => handleExpandClick("Enter title", "")}
+        onClick={() => setShowModal(true)}
         variant="success"
         type="submit"
       >
@@ -32,8 +25,12 @@ function MyButton() {
       <ExpandedModal
         showModal={showModal}
         handleCloseModal={handleCloseModal}
-        modalTitle={modalTitle}
-        modalText={modalText}
+        modalTitle={"Enter a title"}
+        modalText={""}
+        itemList={itemList}
+        setitemList={setitemList}
+        create={true}
+        index={-1}
       />
     </div>
   );
