@@ -15,7 +15,7 @@ module.exports = {
       {
         _db = db.db("Cluster0");
         console.log("Successfully connected to MongoDB."); 
-      }
+      }console.log("we went here."); 
       return callback(err);
          });
   },
