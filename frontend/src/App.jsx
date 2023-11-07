@@ -13,6 +13,13 @@ import SignUp from "./SignUp";
 export default function Main() {
   const [itemList, setitemList] = useState(items);
 
+  useEffect(() => {
+    console.log("loaded");
+    fetch("http://localhost:3000/data")
+      .then((res) => res.json())
+      .then((val) => setitemList(val));
+  }, []);
+
   return (
     <Routes>
       <Route
