@@ -5,7 +5,7 @@ git clone https://github.com/colemaring/MERN-txtdump.git<br/>
 # backend
 cd MERN-txtdump/backend<br/>
 npm install<br/>
-npm devStart<br/>
+npm run devStart<br/>
 <br/>
 # frontend
 cd MERN-txtdump/frontend<br/>
