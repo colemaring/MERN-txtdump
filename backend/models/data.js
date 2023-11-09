@@ -13,4 +13,17 @@ const dataSchema = new mongoose.Schema({
   items: [itemSchema],
 });
 
-module.exports = mongoose.model("Data", dataSchema);
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+});
+
+module.exports = {
+  Data: mongoose.model("Data", dataSchema),
+  User: mongoose.model("User", userSchema)
+};
+
