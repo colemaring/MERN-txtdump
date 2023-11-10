@@ -1,47 +1,52 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require("../models/data");
-const bcrypt = require('bcrypt'); //used to hash passwords
-const jwt = require('jsonwebtoken'); //authenticates the user
+const User = require("../models/users");
+const Data = require("../models/data");
+const bcrypt = require("bcrypt"); //used to hash passwords
+const jwt = require("jsonwebtoken"); //authenticates the user
 
 router.use(express.json());
 
-router.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
+router.post("/signup", async (req, res) => {
+  const { username, password } = req.body;
 
-    const user = await User.findOne({ username })
-    if (user) {
-        return res.status(400).send('User already exists');
-    }
+  if (!username || !password) {
+    return res.status(400).send("Username and password are required");
+  }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.findOne({ username });
+  if (user) {
+    return res.status(400).send("User already exists");
+  }
 
-    const newUser = new User({
-        username,
-        password: hashedPassword
-    });
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    newUser.save((err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send("User added successfully");
-        }
-    });
+  const newUser = new User({
+    username,
+    password: hashedPassword,
+  });
 
-    res.status(201).send();
+  try {
+    await newUser.save();
+    res.status(201).send("User added successfully");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error saving user");
+  }
 });
 
-router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
-    const user = await User.findOne({username});
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(400).send('Invalid username or password');
-    }
+  const user = await User.findOne({ username });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(400).send("Invalid username or password");
+  }
 
-    const token = jwt.sign({ username: user.username }, 'secret_key');
-    res.send({ token });
+  const token = jwt.sign({ username: user.username }, "secret_key");
+  res.send({ token });
 });
 
-app.listen(3000, () => console.log('Server started'));
+// app.listen(3000, () => console.log("Server started"));
+
+module.exports = router;

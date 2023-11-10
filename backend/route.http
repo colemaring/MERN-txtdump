@@ -12,10 +12,18 @@
 
 # PUT http://localhost:3000/data/654d09ead97d39e40a860dbc/0
 
-PUT http://localhost:3000/data/654d09ead97d39e40a860dbc/1
+POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
-  "title": "isdfte",
-  "text": "NEW"
+  "username": "tedst",
+  "password": "sdfsdss"
 }
+
+# PUT http://localhost:3000/data/654d09ead97d39e40a860dbc/1
+# Content-Type: application/json
+
+# {
+#   "title": "issdfsdfdfte",
+#   "text": "NEsdfsdfsdfW"
+# }
