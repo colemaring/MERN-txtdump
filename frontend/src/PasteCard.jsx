@@ -21,6 +21,10 @@ function PasteCard({ index, product, itemList, setitemList }) {
     setitemList(newList);
   };
 
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(product.text);
+  }
+
   return (
     <Card
       key={index}
@@ -59,6 +63,7 @@ function PasteCard({ index, product, itemList, setitemList }) {
           <i
             className="fa-regular fa-copy fa-1x"
             style={{ color: "#000000" }}
+            onClick={(handleCopyClick)}
           ></i>
         </Card.Link>
 
