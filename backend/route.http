@@ -12,18 +12,18 @@
 
 # PUT http://localhost:3000/data/654d09ead97d39e40a860dbc/0
 
-POST http://localhost:3000/user/login
-Content-Type: application/json
-
-{
-  "username": "tedst",
-  "password": "sdfsdss"
-}
-
-# PUT http://localhost:3000/data/654d09ead97d39e40a860dbc/1
+# POST http://localhost:3000/user/login
 # Content-Type: application/json
 
 # {
-#   "title": "issdfsdfdfte",
-#   "text": "NEsdfsdfsdfW"
+#   "username": "epic",
+#   "password": "epic"
 # }
+
+PUT http://localhost:3000/data/654e65255fadda96d8bbe51c
+Content-Type: application/json
+
+{
+  "title": "issdfsdfdfte",
+  "text": "NEsdfsdfsdfW"
+}

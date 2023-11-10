@@ -21,14 +21,22 @@ router.post("/signup", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = new User({
-    username,
-    password: hashedPassword,
-  });
-
   try {
-    await newUser.save();
-    res.status(201).send("User added successfully");
+    const data = new Data({});
+    try {
+      const newData = await data.save();
+      const newUser = new User({
+        username,
+        password: hashedPassword,
+        dataId: newData._id, //this is the id of the list
+      });
+      await newUser.save();
+      res
+        .status(201)
+        .send({ message: "User added successfully", listId: newData._id });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Error saving user");
@@ -43,8 +51,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).send("Invalid username or password");
   }
 
-  const token = jwt.sign({ username: user.username }, "secret_key");
-  res.send({ token });
+  res.send({ message: "Logged in successfuly", listId: user.dataId });
 });
 
 // app.listen(3000, () => console.log("Server started"));
