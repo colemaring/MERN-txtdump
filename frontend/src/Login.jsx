@@ -78,7 +78,7 @@ export default function Login() {
           </Form>
           <div className="pt-3">
             Don't have an account?{" "}
-            <Link to="/sign-up" style={{ color: "var(--green)" }}>
+            <Link to="/signup" style={{ color: "var(--green)" }}>
               Sign up!
             </Link>
           </div>

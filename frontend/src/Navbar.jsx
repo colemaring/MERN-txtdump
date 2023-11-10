@@ -31,7 +31,7 @@ function HeaderBar() {
             type="submit"
             className="mx-2"
             onClick={() => {
-              navigate("/sign-up");
+              navigate("/signup");
             }}
           >
             SIGN UP

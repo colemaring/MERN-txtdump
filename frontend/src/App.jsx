@@ -15,12 +15,12 @@ export default function Main() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("loaded");
     const listId = localStorage.getItem("listId"); // Retrieve listId from local storage
     if (!listId) {
-      setError("List ID not found");
+      setError("List ID not found - TODO: send me to login page");
       return;
     }
+    console.log(listId);
     fetch(`http://localhost:3000/data/${listId}`)
       .then((res) => res.json())
       .then((val) => {
@@ -67,7 +67,7 @@ export default function Main() {
         }
       />
       <Route path="login" element={<Login />} />
-      <Route path="sign-up" element={<SignUp />} />
+      <Route path="signup" element={<SignUp />} />
     </Routes>
   );
 }

@@ -145,17 +145,42 @@ const ExpandedModal = ({
         </Card.Link>
         <Button
           variant="success"
-          onClick={() => {
+          onClick={async () => {
+            // call create new card api
             if (create) {
-              setitemList([...itemList, { title: title, text: text }]);
-              setTitle("Enter a title");
-              setText("");
+              const listId = localStorage.getItem("listId");
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ title: title, text: text }),
+                }
+              );
+              if (!response.ok) {
+                console.error("Failed to update data");
+              }
               handleCloseModal();
             }
+            // update card at specific index api
             if (index != -1) {
-              itemList[index].title = title;
-              itemList[index].text = text;
-              setitemList([...itemList]);
+              const listId = localStorage.getItem("listId");
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}/${index}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ title: title, text: text }),
+                }
+              );
+
+              if (!response.ok) {
+                console.error("Failed to update data");
+              }
               handleCloseModal();
             }
           }}
@@ -166,6 +191,23 @@ const ExpandedModal = ({
           <i
             className="fa-regular fa-trash-can fa-lg"
             style={{ color: "#000000" }}
+            onClick={async () => {
+              const listId = localStorage.getItem("listId");
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+
+              if (!response.ok) {
+                console.error("Failed to remove data");
+              }
+              handleCloseModal();
+            }}
           ></i>
         </Card.Link>
       </Modal.Footer>

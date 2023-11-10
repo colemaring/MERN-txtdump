@@ -15,15 +15,9 @@ function PasteCard({ index, product, itemList, setitemList }) {
     setShowModal(false);
   };
 
-  const handleDeleteClick = () => {
-    const newList = [...itemList];
-    newList.splice(index, 1);
-    setitemList(newList);
-  };
-
   const handleCopyClick = () => {
     navigator.clipboard.writeText(product.text);
-  }
+  };
 
   return (
     <Card
@@ -63,7 +57,7 @@ function PasteCard({ index, product, itemList, setitemList }) {
           <i
             className="fa-regular fa-copy fa-1x"
             style={{ color: "#000000" }}
-            onClick={(handleCopyClick)}
+            onClick={handleCopyClick}
           ></i>
         </Card.Link>
 
@@ -71,7 +65,22 @@ function PasteCard({ index, product, itemList, setitemList }) {
           <i
             className="fa-regular fa-trash-can"
             style={{ color: "#000000" }}
-            onClick={handleDeleteClick}
+            onClick={async () => {
+              const listId = localStorage.getItem("listId");
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+
+              if (!response.ok) {
+                console.error("Failed to remove data");
+              }
+            }}
           ></i>
         </Card.Link>
       </Card.Footer>
