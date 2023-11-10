@@ -11,15 +11,32 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 
 export default function Main() {
-  const [itemList, setitemList] = useState(items);
+  const [itemList, setitemList] = useState([{ title: " ", text: "" }]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("loaded");
-    fetch("http://localhost:3000/data")
+    const listId = localStorage.getItem("listId"); // Retrieve listId from local storage
+    if (!listId) {
+      setError("List ID not found");
+      return;
+    }
+    fetch(`http://localhost:3000/data/${listId}`)
       .then((res) => res.json())
-      .then((val) => setitemList(val));
+      .then((val) => {
+        if (val.items) {
+          setitemList(val.items); // set itemList to val.items
+        } else {
+          setitemList([]); // set itemList to an empty array
+        }
+      }) // set itemList to val.items
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }, []);
-
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   return (
     <Routes>
       <Route

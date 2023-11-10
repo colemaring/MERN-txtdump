@@ -3,8 +3,36 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import FormDesign from "./FormDesign";
 import WebsiteLogo from "./WebsiteLogo";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import App from "./App";
 
 export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const response = await fetch("http://localhost:3000/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const { message, listId } = await response.json();
+      console.log(message + " " + listId);
+      localStorage.setItem("listId", listId);
+      // Redirect to index.html (or any other route)
+      navigate("/home");
+    } else {
+      console.log("Failed to log in");
+    }
+  };
   return (
     <div className="overlay bg-login">
       <div className="h-100 d-flex flex-column justify-content-start align-items-center">
@@ -17,14 +45,16 @@ export default function Login() {
           >
             Login
           </span>
-          <Form>
-            <Form.Group controlId="email">
-              <Form.Label className="h4 mb-2">Email</Form.Label>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="username">
+              <Form.Label className="h4 mb-2">Username</Form.Label>
               <Form.Control
                 className="mb-3 spaced-text rounded-4"
-                type="email"
-                name="email"
+                type="username"
+                name="username"
                 placeholder="name@example.com"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3 h4" controlId="password">
@@ -34,6 +64,8 @@ export default function Login() {
                 type="password"
                 placeholder="Password"
                 name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
             <Button
