@@ -37,7 +37,7 @@ export default function Login() {
     <div className="overlay bg-login">
       <div className="h-100 d-flex flex-column justify-content-start align-items-center">
         <WebsiteLogo />
-        <span className="lead fs-3 mb-5 mt-2">Dump. Use. Modify. Share.</span>
+        <span className="lead fs-3 mb-4 mt-2">Dump. Use. Modify. Share.</span>
         <FormDesign>
           <span
             className="h1 d-block mx-auto w-100 fw-bold mb-3 mt-1"

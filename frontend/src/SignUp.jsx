@@ -34,7 +34,7 @@ export default function SignUp() {
     <div className="overlay bg-sign-up">
       <div className="h-100 d-flex flex-column justify-content-start align-items-center">
         <WebsiteLogo />
-        <div className="lead fs-3 mb-2 mt-4">Let's get started.</div>
+        <div className="lead fs-3 mb-4 mt-2">Let's get started.</div>
         <FormDesign>
           <span
             className="h1 d-block mx-auto w-100 fw-bold mb-3 mt-1"
