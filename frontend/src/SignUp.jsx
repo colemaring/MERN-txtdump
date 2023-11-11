@@ -9,10 +9,16 @@ import { useNavigate } from "react-router-dom";
 export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (event.currentTarget.checkValidity() === false) {
+      event.stopPropagation();
+    }
+    setValidated(true);
 
     const response = await fetch("http://localhost:3000/user/signup", {
       method: "POST",
@@ -42,16 +48,20 @@ export default function SignUp() {
           >
             Create an Account
           </span>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="signUpUsername">
-              <Form.Label className="h4 mb-2">Username</Form.Label>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="signUpUsername">
+              <Form.Label className="h4 mb-2 spaced-text">Username</Form.Label>
               <Form.Control
-                className="mb-3 spaced-text rounded-4"
+                className="spaced-text rounded-4"
                 type="text"
                 name="username"
                 placeholder="JohnDoe123"
                 onChange={(e) => setUsername(e.target.value)}
+                required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter a username.
+              </Form.Control.Feedback>
             </Form.Group>
             {/* <Form.Group controlId="signUpEmail">
               <Form.Label className="h4 mb-2">Email</Form.Label>
@@ -64,15 +74,19 @@ export default function SignUp() {
                 required
               />
             </Form.Group> */}
-            <Form.Group className="mb-3 h4" controlId="signUpPassword">
-              <Form.Label className="mb-2 spaced-text">Password</Form.Label>
+            <Form.Group className="mb-3" controlId="signUpPassword">
+              <Form.Label className="h4 mb-2 spaced-text">Password</Form.Label>
               <Form.Control
                 className="spaced-text rounded-4"
                 type="password"
                 placeholder="Password"
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter a password.
+              </Form.Control.Feedback>
             </Form.Group>
             <Button
               variant="success"
