@@ -12,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState(""); // New state variable for login errors
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,10 +34,15 @@ export default function Login() {
       const { message, listId } = await response.json();
       console.log(message + " " + listId);
       localStorage.setItem("listId", listId);
+      localStorage.setItem("username", username);
+
       // Redirect to index.html (or any other route)
       navigate("/home");
     } else {
       console.log("Failed to log in");
+      if (validated) {
+        setLoginError("Incorrect username or password.");
+      }
     }
   };
   return (
@@ -82,6 +88,7 @@ export default function Login() {
                 Enter your password.
               </Form.Control.Feedback>
             </Form.Group>
+            {loginError && <p style={{ color: "red" }}>{loginError}</p>}{" "}
             <Button
               variant="success"
               type="submit"

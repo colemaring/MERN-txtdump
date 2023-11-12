@@ -4,7 +4,7 @@ import ExpandedModal from "./ExpandedModal";
 import Button from "react-bootstrap/Button";
 import CodeMirror from "@uiw/react-codemirror";
 
-function PasteCard({ index, product, itemList, setitemList }) {
+function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleExpandClick = () => {
@@ -80,6 +80,7 @@ function PasteCard({ index, product, itemList, setitemList }) {
               if (!response.ok) {
                 console.error("Failed to remove data");
               }
+              setRefresh((prev) => !prev);
             }}
           ></i>
         </Card.Link>
@@ -89,10 +90,12 @@ function PasteCard({ index, product, itemList, setitemList }) {
         handleCloseModal={handleCloseModal}
         modalTitle={product.title}
         modalText={product.text}
+        language={product.language}
         itemList={itemList}
         setitemList={setitemList}
         create={false}
         index={index}
+        setRefresh={setRefresh}
       />
     </Card>
   );

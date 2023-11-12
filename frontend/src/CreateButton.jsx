@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import React, { useState } from "react";
 import ExpandedModal from "./ExpandedModal";
 
-function MyButton({ itemList, setitemList }) {
+function MyButton({ itemList, setitemList, setRefresh }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleCloseModal = () => {
@@ -31,6 +31,7 @@ function MyButton({ itemList, setitemList }) {
         setitemList={setitemList}
         create={true}
         index={-1}
+        setRefresh={setRefresh}
       />
     </div>
   );

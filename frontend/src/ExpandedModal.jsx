@@ -23,11 +23,24 @@ const ExpandedModal = ({
   setitemList,
   create,
   index,
+  setRefresh,
+  language,
 }) => {
+  if (create) {
+    language = "markdown";
+  }
   const [selectedLanguage, setSelectedLanguage] = useState(markdown());
   const [selectedLanguageLabel, setSelectedLanguageLabel] =
     useState("markdown");
   const [text, setText] = useState(modalText);
+
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(text);
+  };
+
+  useEffect(() => {
+    handleLanguageChange(language);
+  }, [language, showModal]);
 
   const handleLanguageChange = (language) => {
     setSelectedLanguageLabel(language);
@@ -69,6 +82,8 @@ const ExpandedModal = ({
   useEffect(() => {
     setTitle(index >= 0 ? itemList[index].title : "Enter a title");
   }, [index, itemList]);
+
+  // console.log(language);
 
   return (
     <Modal size="lg" show={showModal} onHide={handleCloseModal}>
@@ -141,6 +156,7 @@ const ExpandedModal = ({
           <i
             className="fa-regular fa-copy fa-lg"
             style={{ color: "#000000" }}
+            onClick={handleCopyClick}
           ></i>
         </Card.Link>
         <Button
@@ -156,7 +172,11 @@ const ExpandedModal = ({
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ title: title, text: text }),
+                  body: JSON.stringify({
+                    title: title,
+                    text: text,
+                    language: selectedLanguageLabel,
+                  }),
                 }
               );
               if (!response.ok) {
@@ -174,7 +194,11 @@ const ExpandedModal = ({
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ title: title, text: text }),
+                  body: JSON.stringify({
+                    title: title,
+                    text: text,
+                    language: selectedLanguageLabel,
+                  }),
                 }
               );
 
@@ -183,6 +207,7 @@ const ExpandedModal = ({
               }
               handleCloseModal();
             }
+            setRefresh((prev) => !prev);
           }}
         >
           Save Changes
@@ -207,6 +232,7 @@ const ExpandedModal = ({
                 console.error("Failed to remove data");
               }
               handleCloseModal();
+              setRefresh((prev) => !prev);
             }}
           ></i>
         </Card.Link>

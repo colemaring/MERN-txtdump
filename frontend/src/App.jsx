@@ -8,22 +8,26 @@ import AlertComponent from "./Alert";
 import { Route, Routes } from "react-router-dom";
 import TxtDump from "./TxtDump";
 import Login from "./Login";
+import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 
 export default function Main() {
   const [itemList, setitemList] = useState([{ title: " ", text: "" }]);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false); // refresh the page
+  const navigate = useNavigate();
 
   useEffect(() => {
     const listId = localStorage.getItem("listId"); // Retrieve listId from local storage
     if (!listId) {
-      setError("List ID not found - TODO: send me to login page");
+      navigate("/login");
       return;
     }
     console.log(listId);
     fetch(`http://localhost:3000/data/${listId}`)
       .then((res) => res.json())
       .then((val) => {
+        console.log(val.items);
         if (val.items) {
           setitemList(val.items); // set itemList to val.items
         } else {
@@ -33,18 +37,22 @@ export default function Main() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [refresh]);
   if (error) {
     return <div>Error: {error}</div>;
   }
   return (
     <Routes>
       <Route
-        path="/"
+        path="/*"
         element={
           <div>
             <Navbar />
-            <CreateButton itemList={itemList} setitemList={setitemList} />
+            <CreateButton
+              itemList={itemList}
+              setitemList={setitemList}
+              setRefresh={setRefresh}
+            />
             <div
               style={{
                 display: "flex",
@@ -60,6 +68,7 @@ export default function Main() {
                   product={product}
                   itemList={itemList}
                   setitemList={setitemList}
+                  setRefresh={setRefresh}
                 />
               ))}
             </div>
