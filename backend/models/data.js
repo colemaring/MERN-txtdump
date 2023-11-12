@@ -7,6 +7,9 @@ const itemSchema = new mongoose.Schema({
   text: {
     type: String,
   },
+  language: {
+    type: String,
+  },
 });
 
 const dataSchema = new mongoose.Schema({
