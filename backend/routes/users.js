@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
   const user = await User.findOne ({
     $or: [{username: loginType}, {email: loginType}]
   });
-  console.log(loginType, password);
+  
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(400).send("Invalid username or password");
   }
