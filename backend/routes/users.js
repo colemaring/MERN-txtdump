@@ -8,15 +8,15 @@ const jwt = require("jsonwebtoken"); //authenticates the user
 router.use(express.json());
 
 router.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).send("Username and password are required");
+  if (!username || !email || !password) {
+    return res.status(400).send("Username, email and password are required");
   }
 
-  const user = await User.findOne({ username });
-  if (user) {
-    return res.status(400).send("User already exists");
+  const user = await User.findOne({ email });
+  if (email) {
+    return res.status(400).send("Email already has an account");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,6 +27,7 @@ router.post("/signup", async (req, res) => {
       const newData = await data.save();
       const newUser = new User({
         username,
+        email,
         password: hashedPassword,
         dataId: newData._id, //this is the id of the list
       });
@@ -43,17 +44,21 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+
+router.post("/login", async (req, res) => {
+
+  const { loginType, password } = req.body;
+  
+  const user = await User.findOne ({
+    $or: [{username: loginType}, {email: loginType}]
+  });
+  console.log(loginType, password);
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(400).send("Invalid username or password");
   }
 
-  res.send({ message: "Logged in successfuly", listId: user.dataId });
+  res.send({ message: "Logged in successfuly", listId: user.dataId, username: user.username });
 });
-
-// app.listen(3000, () => console.log("Server started"));
 
 module.exports = router;

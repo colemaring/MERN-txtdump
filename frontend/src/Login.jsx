@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import App from "./App";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
+  const [loginType, setLoginType] = useState(""); 
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(""); // New state variable for login errors
 
@@ -27,11 +27,12 @@ export default function Login() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ loginType, password }),
     });
 
+    
     if (response.ok) {
-      const { message, listId } = await response.json();
+      const { message, listId, username } = await response.json();
       console.log(message + " " + listId);
       localStorage.setItem("listId", listId);
       localStorage.setItem("username", username);
@@ -62,11 +63,11 @@ export default function Login() {
               <Form.Label className="h4 mb-2 spaced-text">Username</Form.Label>
               <Form.Control
                 className=" spaced-text rounded-4"
-                type="username"
-                name="username"
+                type="text"
+                name="loginType"
                 placeholder="name@example.com"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={loginType}
+                onChange={(e) => setLoginType(e.target.value)}
                 required
               />
               <Form.Control.Feedback type="invalid">
