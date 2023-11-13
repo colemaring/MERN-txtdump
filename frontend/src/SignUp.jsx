@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export default function SignUp() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, email, password }),
     });
 
     if (response.ok) {
@@ -63,7 +64,7 @@ export default function SignUp() {
                 Please enter a username.
               </Form.Control.Feedback>
             </Form.Group>
-            {/* <Form.Group controlId="signUpEmail">
+            <Form.Group controlId="signUpEmail">
               <Form.Label className="h4 mb-2">Email</Form.Label>
               <Form.Control
                 className="mb-3 spaced-text rounded-4"
@@ -71,9 +72,10 @@ export default function SignUp() {
                 name="email"
                 placeholder="name@example.com"
                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{1,}$"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </Form.Group> */}
+            </Form.Group>
             <Form.Group className="mb-3" controlId="signUpPassword">
               <Form.Label className="h4 mb-2 spaced-text">Password</Form.Label>
               <Form.Control
