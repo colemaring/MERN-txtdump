@@ -15,7 +15,7 @@ router.post("/signup", async (req, res) => {
   }
 
   const user = await User.findOne({ email });
-  if (email) {
+  if (user) {
     return res.status(400).send("Email already has an account");
   }
 
