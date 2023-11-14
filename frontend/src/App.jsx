@@ -19,10 +19,11 @@ export default function Main() {
 
   useEffect(() => {
     const listId = localStorage.getItem("listId"); // Retrieve listId from local storage
-    if (!listId) {
+    if (!listId || listId == "null") {
       navigate("/login");
       return;
     }
+
     console.log(listId);
     fetch(`http://localhost:3000/data/${listId}`)
       .then((res) => res.json())

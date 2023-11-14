@@ -1,11 +1,13 @@
 import Card from "react-bootstrap/Card";
 import React, { useState } from "react";
 import ExpandedModal from "./ExpandedModal";
+import DeleteModal from "./DeleteModal";
 import Button from "react-bootstrap/Button";
 import CodeMirror from "@uiw/react-codemirror";
 
 function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
   const [showModal, setShowModal] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handleExpandClick = () => {
     setShowModal(true);
@@ -13,6 +15,14 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleCloseModalDelete = () => {
+    setShowModalDelete(false);
+  };
+
+  const handleShowDeleteModal = () => {
+    setShowModalDelete(true);
   };
 
   const handleCopyClick = () => {
@@ -66,21 +76,7 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
             className="fa-regular fa-trash-can"
             style={{ color: "#000000" }}
             onClick={async () => {
-              const listId = localStorage.getItem("listId");
-              const response = await fetch(
-                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
-                {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-
-              if (!response.ok) {
-                console.error("Failed to remove data");
-              }
-              setRefresh((prev) => !prev);
+              handleShowDeleteModal();
             }}
           ></i>
         </Card.Link>
@@ -96,6 +92,12 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
         create={false}
         index={index}
         setRefresh={setRefresh}
+      />
+      <DeleteModal
+        setRefresh={setRefresh}
+        showModalDelete={showModalDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        index={index}
       />
     </Card>
   );

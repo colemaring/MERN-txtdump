@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import DeleteModal from "./DeleteModal";
 import { Modal } from "react-bootstrap";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -33,9 +34,18 @@ const ExpandedModal = ({
   const [selectedLanguageLabel, setSelectedLanguageLabel] =
     useState("markdown");
   const [text, setText] = useState(modalText);
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(text);
+  };
+
+  const handleCloseModalDelete = () => {
+    setShowModalDelete(false);
+  };
+
+  const handleShowDeleteModal = () => {
+    setShowModalDelete(true);
   };
 
   useEffect(() => {
@@ -217,26 +227,18 @@ const ExpandedModal = ({
             className="fa-regular fa-trash-can fa-lg"
             style={{ color: "#000000" }}
             onClick={async () => {
-              const listId = localStorage.getItem("listId");
-              const response = await fetch(
-                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
-                {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-
-              if (!response.ok) {
-                console.error("Failed to remove data");
-              }
-              handleCloseModal();
-              setRefresh((prev) => !prev);
+              handleShowDeleteModal();
             }}
           ></i>
         </Card.Link>
       </Modal.Footer>
+      <DeleteModal
+        setRefresh={setRefresh}
+        showModalDelete={showModalDelete}
+        handleCloseModalDelete={handleCloseModalDelete}
+        index={index}
+        handleCloseModal={handleCloseModal}
+      />
     </Modal>
   );
 };

@@ -24,19 +24,12 @@ function HeaderBar() {
             className="mx-2"
             onClick={() => {
               navigate("/login");
+              localStorage.setItem("listId", null);
+              localStorage.setItem("username", null);
             }}
           >
-            LOGIN
-          </Button>
-          <Button
-            variant="success"
-            type="submit"
-            className="mx-2"
-            onClick={() => {
-              navigate("/signup");
-            }}
-          >
-            SIGN UP
+            LOGOUT&nbsp;&nbsp;
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
           </Button>
         </Container>
       </Navbar>

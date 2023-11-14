@@ -1,33 +1,51 @@
-import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function DeleteModal(props) {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleDelete = () => {
-    // Call the delete function passed in as a prop
-    props.onDelete();
-    handleClose();
-  };
-
+function DeleteModal({
+  showModalDelete,
+  handleCloseModalDelete,
+  index,
+  setRefresh,
+  handleCloseModal,
+}) {
   return (
     <>
-      <Button variant="danger" onClick={handleShow}>
-        Delete
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showModalDelete} onHide={handleCloseModalDelete}>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this item?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleCloseModalDelete();
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button
+            variant="danger"
+            onClick={async () => {
+              const listId = localStorage.getItem("listId");
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+
+              if (!response.ok) {
+                console.error("Failed to remove data");
+              }
+              handleCloseModalDelete();
+              if (handleCloseModal) handleCloseModal();
+              // refresh list with new data
+              setRefresh((prev) => !prev);
+            }}
+          >
             Delete
           </Button>
         </Modal.Footer>
