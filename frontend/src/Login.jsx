@@ -10,7 +10,7 @@ import App from "./App";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
-  const [loginType, setLoginType] = useState(""); 
+  const [loginType, setLoginType] = useState("");
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(""); // New state variable for login errors
 
@@ -20,7 +20,9 @@ export default function Login() {
     if (event.currentTarget.checkValidity() === false) {
       event.stopPropagation();
     }
-    setValidated(true);
+
+    // reset error if user tries to submit again
+    setLoginError("");
 
     const response = await fetch("http://localhost:3000/user/login", {
       method: "POST",
@@ -30,7 +32,6 @@ export default function Login() {
       body: JSON.stringify({ loginType, password }),
     });
 
-    
     if (response.ok) {
       const { message, listId, username } = await response.json();
       console.log(message + " " + listId);
@@ -41,7 +42,8 @@ export default function Login() {
       navigate("/home");
     } else {
       console.log("Failed to log in");
-      if (validated) {
+
+      if (loginType && password) {
         setLoginError("Incorrect username or password.");
       }
     }
@@ -94,6 +96,9 @@ export default function Login() {
               variant="success"
               type="submit"
               className="d-block mx-auto mt-4 w-100 rounded-5"
+              onClick={() => {
+                setValidated(true);
+              }}
             >
               Log in
             </Button>

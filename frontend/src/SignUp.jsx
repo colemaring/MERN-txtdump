@@ -75,6 +75,9 @@ export default function SignUp() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid email.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="signUpPassword">
               <Form.Label className="h4 mb-2 spaced-text">Password</Form.Label>
