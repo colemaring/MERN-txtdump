@@ -33,12 +33,17 @@ export default function Login() {
     });
 
     if (response.ok) {
-      const { message, listId, username } = await response.json();
+      const { message, listId, username, confirmedEmail } =
+        await response.json();
       console.log(message + " " + listId);
+
+      if (!confirmedEmail) {
+        setLoginError("Email not confirmed.");
+        return;
+      }
       localStorage.setItem("listId", listId);
       localStorage.setItem("username", username);
 
-      // Redirect to index.html (or any other route)
       navigate("/home");
     } else {
       console.log("Failed to log in");

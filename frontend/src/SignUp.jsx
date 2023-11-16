@@ -13,6 +13,27 @@ export default function SignUp() {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
+  const sendEmail = async (email, username) => {
+    try {
+      const response = await fetch("http://localhost:3000/email/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error("Failed to send email");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,9 +51,10 @@ export default function SignUp() {
     });
 
     if (response.ok) {
-      const { message, listId } = await response.json();
-      console.log(message + " " + listId);
-      navigate("/login");
+      const { message } = await response.json();
+      console.log(message);
+      sendEmail(email, username);
+      // navigate("/login");
     } else {
       console.log("Failed to sign up");
     }
