@@ -27,11 +27,10 @@ function DeleteModal({
             variant="danger"
             onClick={async () => {
               const listId = localStorage.getItem("listId");
-              const response = await fetch(
-                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
-                {
+              const response = await fetch(`http://localhost:3000/data/${listId}/removeAtIndex/${index}`, {
                   method: "PUT",
                   headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
                     "Content-Type": "application/json",
                   },
                 }

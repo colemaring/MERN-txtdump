@@ -33,9 +33,10 @@ export default function Login() {
     });
 
     if (response.ok) {
-      const { message, listId, username, confirmedEmail } =
+      const { message, listId, username, confirmedEmail, loginToken } =
         await response.json();
       console.log(message + " " + listId);
+      localStorage.setItem("loginToken", loginToken);
 
       if (!confirmedEmail) {
         setLoginError("Email not confirmed.");

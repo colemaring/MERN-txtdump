@@ -25,7 +25,11 @@ export default function Main() {
     }
 
     console.log(listId);
-    fetch(`http://localhost:3000/data/${listId}`)
+    fetch(`http://localhost:3000/data/${listId}`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      }
+    })
       .then((res) => res.json())
       .then((val) => {
         console.log(val.items);

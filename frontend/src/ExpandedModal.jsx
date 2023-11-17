@@ -175,11 +175,10 @@ const ExpandedModal = ({
             // call create new card api
             if (create) {
               const listId = localStorage.getItem("listId");
-              const response = await fetch(
-                `http://localhost:3000/data/${listId}`,
-                {
+              const response = await fetch( `http://localhost:3000/data/${listId}`,{
                   method: "PUT",
                   headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
@@ -201,6 +200,9 @@ const ExpandedModal = ({
                 `http://localhost:3000/data/${listId}/${index}`,
                 {
                   method: "PUT",
+                  headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
+                  },
                   headers: {
                     "Content-Type": "application/json",
                   },

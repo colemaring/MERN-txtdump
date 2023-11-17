@@ -16,7 +16,12 @@ router.post("/signup", async (req, res) => {
 
   const userByEmail = await User.findOne({ email });
   if (userByEmail) {
-    return res.status(400).send("Email already has an account");
+    return res.status(400).send("Email already in use");
+  }
+
+  const userByUsername = await User.findOne({ username });
+  if (userByUsername) {
+    return res.status(400).send("Username already in use");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -58,15 +63,22 @@ router.post("/login", async (req, res) => {
   console.log(user.confirmedEmail);
 
   if (!user.confirmedEmail) {
-    consele.log("Email not confirmed");
+    console.log("Email not confirmed");
     return res.status(400).send("Please confirm your email before logging in");
   }
+
+  //since the users email was confirmed we can now give them a token when they login
+  const loginToken = jwt.sign(
+    { userId: user._id, username: user.username },
+    process.env.JWT_SECRET
+  );
 
   res.send({
     message: "Logged in successfuly",
     listId: user.dataId,
     username: user.username,
     confirmedEmail: user.confirmedEmail,
+    loginToken,
   });
 });
 
