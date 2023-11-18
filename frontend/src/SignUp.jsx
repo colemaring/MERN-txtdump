@@ -12,6 +12,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const sendEmail = async (email, username) => {
     try {
@@ -50,13 +51,17 @@ export default function SignUp() {
       body: JSON.stringify({ username, email, password }),
     });
 
+    setErrorMessage("");
+
     if (response.ok) {
-      const { message } = await response.json();
-      console.log(message);
+      const responseBody = await response.json();
+      console.log(responseBody.message);
       sendEmail(email, username);
       // navigate("/login");
     } else {
-      console.log("Failed to sign up");
+      const errorMessage = await response.text();
+      console.log(errorMessage);
+      setErrorMessage(errorMessage);
     }
   };
   return (
@@ -115,6 +120,11 @@ export default function SignUp() {
                 Please enter a password.
               </Form.Control.Feedback>
             </Form.Group>
+            {errorMessage && (
+              <div className="error-message" style={{ color: "red" }}>
+                {errorMessage}
+              </div>
+            )}
             <Button
               variant="success"
               type="submit"

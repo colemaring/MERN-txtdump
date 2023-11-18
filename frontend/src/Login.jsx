@@ -35,22 +35,24 @@ export default function Login() {
     if (response.ok) {
       const { message, listId, username, confirmedEmail, loginToken } =
         await response.json();
-      console.log(message + " " + listId);
-      localStorage.setItem("loginToken", loginToken);
 
-      if (!confirmedEmail) {
-        setLoginError("Email not confirmed.");
-        return;
-      }
+      localStorage.setItem("token", loginToken);
       localStorage.setItem("listId", listId);
       localStorage.setItem("username", username);
 
       navigate("/home");
     } else {
       console.log("Failed to log in");
+      const errorMessage = await response.text();
+      if (errorMessage.confirmedEmail && !errorMessage.confirmedEmail) {
+        setLoginError("Email not confirmed.");
+        console.log("Email not confirmed.");
+        return;
+      }
 
       if (loginType && password) {
         setLoginError("Incorrect username or password.");
+        console.log("Incorrect username or password.");
       }
     }
   };

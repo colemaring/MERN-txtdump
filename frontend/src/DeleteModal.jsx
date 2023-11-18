@@ -27,11 +27,15 @@ function DeleteModal({
             variant="danger"
             onClick={async () => {
               const listId = localStorage.getItem("listId");
-              const response = await fetch(`http://localhost:3000/data/${listId}/removeAtIndex/${index}`, {
+              const token = localStorage.getItem("token"); // Retrieve token from local storage
+
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
+                {
                   method: "PUT",
                   headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                   },
                 }
               );

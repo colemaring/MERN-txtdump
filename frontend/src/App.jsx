@@ -19,6 +19,8 @@ export default function Main() {
 
   useEffect(() => {
     const listId = localStorage.getItem("listId"); // Retrieve listId from local storage
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
+
     if (!listId || listId == "null") {
       navigate("/login");
       return;
@@ -27,10 +29,16 @@ export default function Main() {
     console.log(listId);
     fetch(`http://localhost:3000/data/${listId}`, {
       headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
-      }
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 403) {
+          navigate("/login"); // Redirect to login page
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
       .then((val) => {
         console.log(val.items);
         if (val.items) {
@@ -38,11 +46,12 @@ export default function Main() {
         } else {
           setitemList([]); // set itemList to an empty array
         }
-      }) // set itemList to val.items
+      })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, [refresh]);
+
   if (error) {
     return <div>Error: {error}</div>;
   }

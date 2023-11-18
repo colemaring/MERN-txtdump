@@ -24,9 +24,9 @@ function HeaderBar() {
             className="mx-2"
             onClick={() => {
               navigate("/login");
-              localStorage.removeItem("loginToken");
-              localStorage.setItem("listId", null);
-              localStorage.setItem("username", null);
+              localStorage.removeItem("listId");
+              localStorage.removeItem("username");
+              localStorage.removeItem("token");
             }}
           >
             LOGOUT&nbsp;&nbsp;

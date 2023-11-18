@@ -33,7 +33,7 @@ const ExpandedModal = ({
   const [selectedLanguage, setSelectedLanguage] = useState(markdown());
   const [selectedLanguageLabel, setSelectedLanguageLabel] =
     useState("markdown");
-  const [text, setText] = useState(modalText);
+  const [text, setText] = useState(index >= 0 ? itemList[index].text : "");
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handleCopyClick = () => {
@@ -91,6 +91,7 @@ const ExpandedModal = ({
 
   useEffect(() => {
     setTitle(index >= 0 ? itemList[index].title : "Enter a title");
+    setText(index >= 0 ? itemList[index].text : "");
   }, [index, itemList]);
 
   // console.log(language);
@@ -175,11 +176,15 @@ const ExpandedModal = ({
             // call create new card api
             if (create) {
               const listId = localStorage.getItem("listId");
-              const response = await fetch( `http://localhost:3000/data/${listId}`,{
+              const token = localStorage.getItem("token"); // Retrieve token from local storage
+
+              const response = await fetch(
+                `http://localhost:3000/data/${listId}`,
+                {
                   method: "PUT",
                   headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                   },
                   body: JSON.stringify({
                     title: title,
@@ -196,15 +201,15 @@ const ExpandedModal = ({
             // update card at specific index api
             if (index != -1) {
               const listId = localStorage.getItem("listId");
+              const token = localStorage.getItem("token"); // Retrieve token from local storage
+
               const response = await fetch(
                 `http://localhost:3000/data/${listId}/${index}`,
                 {
                   method: "PUT",
                   headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('loginToken'),
-                  },
-                  headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                   },
                   body: JSON.stringify({
                     title: title,
