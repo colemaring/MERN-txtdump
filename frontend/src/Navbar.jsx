@@ -12,7 +12,12 @@ function HeaderBar() {
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="/">TXT DUMP</Navbar.Brand>
+          <Navbar.Brand onClick={() => {
+            localStorage.removeItem("listId");
+            localStorage.removeItem("username");
+            localStorage.removeItem("token");
+          }}
+            href="/">TXT DUMP</Navbar.Brand>
           <Navbar.Text className="mx-2">Signed in as: {username}</Navbar.Text>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
