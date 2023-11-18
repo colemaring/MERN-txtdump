@@ -15,17 +15,14 @@ db.once("open", () => console.log("Connected to Database"));
 
 app.use(express.json());
 
-const emailRouter = require("./routes/email");
-app.use("/email", emailRouter);
+const authenticateJWTToken = require("./middleware/tokenAuthenticate");
+const dataRouter = require("./routes/data");
+app.use("/data", authenticateJWTToken, dataRouter);
+
 const userRouter = require("./routes/users");
 app.use("/user", userRouter);
 
-const authenticateJWTToken = require("./middleware/tokenAuthenticate");
-app.use(authenticateJWTToken); //requires all below this to use authenticateJWTToken
-const dataRouter = require("./routes/data");
-app.use("/data", dataRouter);
-
-
+const emailRouter = require("./routes/email");
+app.use("/email", emailRouter);
 
 app.listen(3000, () => console.log("Server started"));
-

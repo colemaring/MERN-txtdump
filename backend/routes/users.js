@@ -16,12 +16,12 @@ router.post("/signup", async (req, res) => {
 
   const userByEmail = await User.findOne({ email });
   if (userByEmail) {
-    return res.status(400).send("Email already in use");
+    return res.status(400).send("Email is already taken");
   }
 
   const userByUsername = await User.findOne({ username });
   if (userByUsername) {
-    return res.status(400).send("Username already in use");
+    return res.status(400).send("Username is already taken");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,10 +60,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).send("Invalid username or password");
   }
 
-  console.log(user.confirmedEmail);
-
   if (!user.confirmedEmail) {
-    console.log("Email not confirmed");
     return res.status(400).send("Please confirm your email before logging in");
   }
 
@@ -73,13 +70,18 @@ router.post("/login", async (req, res) => {
     process.env.JWT_SECRET
   );
 
-  res.send({
-    message: "Logged in successfuly",
-    listId: user.dataId,
-    username: user.username,
-    confirmedEmail: user.confirmedEmail,
-    loginToken,
-  });
+  try {
+    res.send({
+      message: "Logged in successfuly",
+      listId: user.dataId,
+      username: user.username,
+      confirmedEmail: user.confirmedEmail,
+      loginToken: loginToken,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "An error occurred while logging in" });
+  }
 });
 
 module.exports = router;

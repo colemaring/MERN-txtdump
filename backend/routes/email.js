@@ -43,14 +43,21 @@ router.post("/send-email", async (req, res) => {
   );
   const url = `http://localhost:3000/email/confirmation/${emailToken}`;
 
-  let info = await transporter.sendMail({
-    from: '"Txt Dump" <TxtDump@verify.com>',
-    to: req.body.email,
-    subject: "Txt Dump Email Verification",
-    html: `Hey ${req.body.username}, your email verficiation link will expire in 1 hour: <a href="${url}">${url}</a>`,
-  });
+  try {
+    let info = await transporter.sendMail({
+      from: '"Txt Dump" <TxtDump@verify.com>',
+      to: req.body.email,
+      subject: "Txt Dump Email Verification",
+      html: `Hey ${req.body.username}, your email verficiation link will expire in 1 hour: <a href="${url}">${url}</a>`,
+    });
 
-  res.send({ status: "Email sent" });
+    res.send({ status: "Email sent" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ status: "Failed to send email, is it in the correct format?" });
+  }
 });
 
 module.exports = router;

@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const authenticateJWTToken = (request, response, next) => {
   const authHeader = request.headers.authorization;
 
   if (authHeader) {
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
     const secretKey = process.env.JWT_SECRET;
 
     jwt.verify(token, secretKey, (error, decodedUser) => {
@@ -13,12 +13,13 @@ const authenticateJWTToken = (request, response, next) => {
         console.error(error);
         return response.sendStatus(403); // Forbidden
       }
-      
+
       request.user = decodedUser;
       console.log("user authenticated");
       next();
     });
   } else {
+    console.log("user not authenticated");
     response.sendStatus(401); // Unauthorized
   }
 };
