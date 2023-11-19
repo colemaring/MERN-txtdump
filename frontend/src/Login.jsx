@@ -21,8 +21,14 @@ export default function Login() {
       event.stopPropagation();
     }
 
-    // reset error if user tries to submit again
     setLoginError("");
+    setValidated(true);
+
+    if (!loginType || !password) {
+      return;
+    }
+
+    // reset error if user tries to submit again
 
     const response = await fetch("http://localhost:3000/user/login", {
       method: "POST",
@@ -42,20 +48,13 @@ export default function Login() {
 
       navigate("/home");
     } else {
-      console.log("Failed to log in");
+      // console.log("Failed to log in");
       const errorMessage = await response.text();
-      if (errorMessage.confirmedEmail && !errorMessage.confirmedEmail) {
-        setLoginError("Email not confirmed.");
-        console.log("Email not confirmed.");
-        return;
-      }
-
-      if (loginType && password) {
-        setLoginError("Incorrect username or password.");
-        console.log("Incorrect username or password.");
-      }
+      console.log(errorMessage);
+      setLoginError(errorMessage);
     }
   };
+
   return (
     <div className="overlay bg-login">
       <div className="h-100 d-flex flex-column justify-content-start align-items-center">

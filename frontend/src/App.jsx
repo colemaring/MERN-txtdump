@@ -26,7 +26,7 @@ export default function Main() {
       return;
     }
 
-    console.log(listId);
+    // console.log(listId);
     fetch(`http://localhost:3000/data/${listId}`, {
       headers: {
         Authorization: `Bearer ${token}`, // Include the token in the Authorization header
@@ -40,7 +40,7 @@ export default function Main() {
         return res.json();
       })
       .then((val) => {
-        console.log(val.items);
+        // console.log(val.items);
         if (val.items) {
           setitemList(val.items); // set itemList to val.items
         } else {

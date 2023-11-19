@@ -12,7 +12,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [showMessage, setShowMessage] = useState({ message: "", color: "red" });
 
   const sendEmail = async (email, username) => {
     try {
@@ -41,6 +41,8 @@ export default function SignUp() {
     if (event.currentTarget.checkValidity() === false) {
       event.stopPropagation();
     }
+
+    setShowMessage({ message: "", color: "red" });
     setValidated(true);
 
     const response = await fetch("http://localhost:3000/user/signup", {
@@ -51,17 +53,21 @@ export default function SignUp() {
       body: JSON.stringify({ username, email, password }),
     });
 
-    setErrorMessage("");
+    // setErrorMessage("");
 
     if (response.ok) {
       const responseBody = await response.json();
       console.log(responseBody.message);
       sendEmail(email, username);
+      setShowMessage({
+        message: "Account successfully created, check your email!",
+        color: "green",
+      });
       // navigate("/login");
     } else {
       const errorMessage = await response.text();
       console.log(errorMessage);
-      setErrorMessage(errorMessage);
+      setShowMessage({ message: errorMessage, color: "red" });
     }
   };
   return (
@@ -120,9 +126,12 @@ export default function SignUp() {
                 Please enter a password.
               </Form.Control.Feedback>
             </Form.Group>
-            {errorMessage && (
-              <div className="error-message" style={{ color: "red" }}>
-                {errorMessage}
+            {showMessage.message && (
+              <div
+                className="error-message"
+                style={{ color: showMessage.color }}
+              >
+                {showMessage.message}
               </div>
             )}
             <Button
