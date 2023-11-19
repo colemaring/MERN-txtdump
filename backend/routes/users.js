@@ -9,9 +9,9 @@ router.use(express.json());
 
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
-
+  // this will be handled on frontend
   if (!username || !email || !password) {
-    return res.status(400).send("Username, email and password are required");
+    return res.status(400);
   }
 
   const userByEmail = await User.findOne({ email });
