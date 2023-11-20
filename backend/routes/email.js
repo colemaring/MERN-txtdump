@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const User = require("../models/users");
 const Data = require("../models/data");
 const jwt = require("jsonwebtoken"); //authenticates the user
+const bcrypt = require("bcrypt"); //used to hash passwords
 
 router.use(express.json());
 
@@ -51,12 +52,79 @@ router.post("/send-email", async (req, res) => {
       html: `Hey ${req.body.username}, your email verficiation link will expire in 1 hour: <a href="${url}">${url}</a>`,
     });
 
+    console.log(info);
     res.send({ status: "Email sent" });
   } catch (error) {
     console.error(error);
     res
       .status(500)
       .send({ status: "Failed to send email, is it in the correct format?" });
+  }
+});
+
+// send reset password email route
+router.post("/forgot", async (req, res) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAILPASS,
+    },
+  });
+
+  const user = await User.findOne({ email: req.body.email });
+
+  // If the user does not exist or has not been confirmed, send an error message
+  if (!user || !user.confirmedEmail) {
+    return res.status(400).send("Email not found or not confirmed");
+  }
+
+  console.log(req.body); // Add this line
+
+  const emailToken = jwt.sign(
+    { email: req.body.email, password: req.body.password },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+  const url = `http://localhost:3000/email/confirmforget/${emailToken}`;
+
+  try {
+    let info = await transporter.sendMail({
+      from: '"Txt Dump" <TxtDump@verify.com>',
+      to: req.body.email,
+      subject: "Txt Dump Password Reset",
+      html: `Somebody just tried to reset your password for TXT Dump. If this wasnt you, you may safely ignore this email. If this was your, your link will expire in 1 hour: <a href="${url}">${url}</a>`,
+    });
+
+    res.send({ status: "Email sent" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ status: "Failed to send email, is it in the correct format?" });
+  }
+});
+
+router.get("/confirmforget/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { email, password } = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Here you should search for the user in your database using the email
+    // from the token and update their password. This is just a placeholder.
+    const user = await User.findOne({ email });
+
+    // THIS NEEDS TO BE HASHED
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword; // Update the password
+    await user.save(); // Save the updated user to the database
+
+    return res.redirect("http://localhost:3001/login");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Failed to reset password");
   }
 });
 
