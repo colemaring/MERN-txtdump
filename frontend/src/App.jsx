@@ -4,6 +4,7 @@ import PasteCard from "./PasteCard";
 import React, { useState, useEffect } from "react";
 import CreateButton from "./CreateButton";
 import items from "./itemsList";
+import AlertComponent from "./Alert";
 import { Route, Routes } from "react-router-dom";
 import TxtDump from "./TxtDump";
 import Login from "./Login";
