@@ -107,6 +107,7 @@ router.post("/forgot", async (req, res) => {
   }
 });
 
+// click the confirmation link route
 router.get("/confirmforget/:token", async (req, res) => {
   try {
     const { token } = req.params;
@@ -127,5 +128,7 @@ router.get("/confirmforget/:token", async (req, res) => {
     res.status(500).send("Failed to reset password");
   }
 });
+
+
 
 module.exports = router;

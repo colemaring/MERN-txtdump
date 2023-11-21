@@ -4,10 +4,12 @@ import ExpandedModal from "./ExpandedModal";
 import DeleteModal from "./DeleteModal";
 import Button from "react-bootstrap/Button";
 import CodeMirror from "@uiw/react-codemirror";
+import ShareModal from "./ShareModal";
 
 function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalShare, setShowModalShare] = useState(false);
 
   const handleExpandClick = () => {
     setShowModal(true);
@@ -28,6 +30,14 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
   const handleCopyClick = () => {
     navigator.clipboard.writeText(product.text);
   };
+
+  const handleShowShareModal = () => {
+    setShowModalShare(true);
+  }
+
+  const handleCloseShareModal = () => {
+    setShowModalShare(false);
+  }
 
   return (
     <Card
@@ -63,6 +73,15 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
         >
           Expand
         </Button>
+
+        <Button
+          onClick={() => handleShowShareModal()}
+          varinant = "outline-secondary"
+          size = "sm"
+        > 
+          Share
+        </Button> 
+
         <Card.Link href="#">
           <i
             className="fa-regular fa-copy fa-1x"
@@ -99,6 +118,13 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
         handleCloseModalDelete={handleCloseModalDelete}
         index={index}
       />
+      <ShareModal
+        setRefresh={setRefresh}
+        showModalShare={showModalShare}
+        handleCloseShareModal={handleCloseShareModal}
+        index={index}
+      />
+      
     </Card>
   );
 }
