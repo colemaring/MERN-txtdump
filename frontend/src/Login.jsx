@@ -6,6 +6,7 @@ import WebsiteLogo from "./WebsiteLogo";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import App from "./App";
+import ForgotModal from "./ForgotModal";
 
 export default function Login() {
   const [password, setPassword] = useState("");
@@ -13,6 +14,15 @@ export default function Login() {
   const [loginType, setLoginType] = useState("");
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(""); // New state variable for login errors
+  const [forgotModalShow, setForgotModalShow] = useState(false);
+
+  const handleCloseModalForgot = () => {
+    setForgotModalShow(false);
+  };
+
+  const handleShowForgotModal = () => {
+    setForgotModalShow(true);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -116,8 +126,22 @@ export default function Login() {
               Sign up!
             </Link>
           </div>
+          <div className="pt-1">
+            <Link
+              style={{ color: "var(--green)" }}
+              onClick={async () => {
+                handleShowForgotModal();
+              }}
+            >
+              Forgot password
+            </Link>
+          </div>
         </FormDesign>
       </div>
+      <ForgotModal
+        showModalForgot={forgotModalShow}
+        handleCloseModalForgot={handleCloseModalForgot}
+      />
     </div>
   );
 }
