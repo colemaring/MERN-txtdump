@@ -2,7 +2,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import React, { useState } from "react";
 export default function ShareModal({
     showModalShare,
-    handleCloseModalShare,
+    handleCloseShareModal,
     index,
     setRefresh,
   }) {
@@ -42,7 +42,7 @@ export default function ShareModal({
     return (
         <Modal
             show={showModalShare}
-            onHide={handleCloseModalShare}
+            onHide={handleCloseShareModal}
             size="lg"
             aria-labelledby="Share"
             centered

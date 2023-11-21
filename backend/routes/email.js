@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt"); //used to hash passwords
 
 router.use(express.json());
 
-// click the confirmation link route
+// click the confirmation link route for email verification
 router.get("/confirmation/:token", async (req, res) => {
   try {
     const { email } = jwt.verify(req.params.token, process.env.JWT_SECRET);
@@ -107,7 +107,7 @@ router.post("/forgot", async (req, res) => {
   }
 });
 
-// click the confirmation link route
+// click the confirmation link route for reset password
 router.get("/confirmforget/:token", async (req, res) => {
   try {
     const { token } = req.params;
@@ -129,6 +129,61 @@ router.get("/confirmforget/:token", async (req, res) => {
   }
 });
 
+// click the confirmation link route for sharing
+router.get("/share", async (req, res) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAILPASS,
+    }
+  });
+
+  //searches for the user we are sending the share link to
+  const user = await User.findOne({ email: req.body.email });
+
+  if(!user || !user.confirmedEmail) {
+    return res.status(400).send("Email not found or not confirmed");
+  }
+
+  console.log(req.body);
+
+  const emailToken = jwt.sign(
+    { email: req.body.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "24h" }
+  );
+  const url = 'http://localhost:3000/email/confirmshare/${emailToken}';
+
+  try {
+    let info = await transporter.sendMail({
+      from: '"Txt Dump" <TxtDump@verify.com>',
+      to: req.body.email,
+      subject: "Txt Dump Share Link",
+      html: `Hey ${req.body.username}, your share link will expire in 24 hours: <a href="${url}">${url}</a>`,
+    })
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ status: "Failed to send email, is it in the correct format?" });
+  }
+});
+
+// click the confirmation link route for sharing
+router.get("/confirmshare/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const {email} = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.redirect("http://localhost:3001/login");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Failed to share");
+  }
+});
 
 
 module.exports = router;
