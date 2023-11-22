@@ -178,7 +178,7 @@ router.get("/confirmshare/:token", async (req, res) => {
     const { token } = req.params;
     const {email} = jwt.verify(token, process.env.JWT_SECRET);
 
-    return res.redirect("http://localhost:3001/login");
+    return res.redirect("http://localhost:3001/ShareView");
   } catch (error) {
     console.error(error);
     res.status(500).send("Failed to share");

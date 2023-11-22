@@ -9,6 +9,7 @@ import TxtDump from "./TxtDump";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
+import ShareView from "./ShareView"; 
 
 export default function Main() {
   const [itemList, setitemList] = useState([{ title: " ", text: "" }]);
@@ -90,6 +91,7 @@ export default function Main() {
       />
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<SignUp />} />
+      <Route path="/shareview/:id" element={<ShareView />} />
     </Routes>
   );
 }

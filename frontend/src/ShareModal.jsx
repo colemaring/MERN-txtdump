@@ -12,29 +12,28 @@ export default function ShareModal({
     const handleSharePasteCard = async (event) => {
         event.preventDefault();
 
-        if(event.currentTarget.checkvalidity() === false){
+        if(event.currentTarget.checkValidity() === false){
             event.stopPropagation();
         }
 
         setEmailMessage("");
 
 
-        //this is copied from ForgotModel Needs to be changed 
-        // const response = await fetch("http://localhost:3000/email/share", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({ email, password }),
-        //   });
+        const response = await fetch("http://localhost:3000/email/share", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          });
       
-        //   if (response.ok) {
-        //     setEmailMessage("Email sent");
-        //   } else {
-        //     const errorMessage = await response.text();
-        //     console.log(errorMessage);
-        //     setEmailMessage(errorMessage);
-        //   }
+          if (response.ok) {
+            setEmailMessage("Email sent");
+          } else {
+            const errorMessage = await response.text();
+            console.log(errorMessage);
+            setEmailMessage(errorMessage);
+          }
 
 
     };

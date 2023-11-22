@@ -39,6 +39,7 @@ function PasteCard({ index, product, itemList, setitemList, setRefresh }) {
     setShowModalShare(false);
   }
 
+
   return (
     <Card
       key={index}
