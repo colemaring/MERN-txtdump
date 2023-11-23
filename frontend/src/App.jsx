@@ -26,7 +26,7 @@ export default function Main() {
     }
 
     // console.log(listId);
-    fetch(`http://localhost:3000/data/${listId}`, {
+    fetch(`https://txtdump.xyz/data/${listId}`, {
       headers: {
         Authorization: `Bearer ${token}`, // Include the token in the Authorization header
       },

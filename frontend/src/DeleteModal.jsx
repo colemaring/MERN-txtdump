@@ -30,7 +30,7 @@ function DeleteModal({
               const token = localStorage.getItem("token"); // Retrieve token from local storage
 
               const response = await fetch(
-                `http://localhost:3000/data/${listId}/removeAtIndex/${index}`,
+                `https://txtdump.xyz/data/${listId}/removeAtIndex/${index}`,
                 {
                   method: "PUT",
                   headers: {

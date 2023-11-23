@@ -179,7 +179,7 @@ const ExpandedModal = ({
               const token = localStorage.getItem("token"); // Retrieve token from local storage
 
               const response = await fetch(
-                `http://localhost:3000/data/${listId}`,
+                `https://txtdump.xyz/data/${listId}`,
                 {
                   method: "PUT",
                   headers: {
@@ -204,7 +204,7 @@ const ExpandedModal = ({
               const token = localStorage.getItem("token"); // Retrieve token from local storage
 
               const response = await fetch(
-                `http://localhost:3000/data/${listId}/${index}`,
+                `https://txtdump.xyz/data/${listId}/${index}`,
                 {
                   method: "PUT",
                   headers: {

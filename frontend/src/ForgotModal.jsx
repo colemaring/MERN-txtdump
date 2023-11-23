@@ -18,7 +18,7 @@ export default function ForgotModal({
 
     setEmailMessage("");
 
-    const response = await fetch("http://localhost:3000/email/forgot", {
+    const response = await fetch("https://txtdump.xyz/email/forgot", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

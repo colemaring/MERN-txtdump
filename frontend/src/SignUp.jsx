@@ -16,7 +16,7 @@ export default function SignUp() {
 
   const sendEmail = async (email, username) => {
     try {
-      const response = await fetch("http://localhost:3000/email/send-email", {
+      const response = await fetch("https://txtdump.xyz/email/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function SignUp() {
     setShowMessage({ message: "", color: "red" });
     setValidated(true);
 
-    const response = await fetch("http://localhost:3000/user/signup", {
+    const response = await fetch("https://txtdump.xyz/user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
