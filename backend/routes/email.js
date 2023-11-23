@@ -14,13 +14,11 @@ router.get("/confirmation/:token", async (req, res) => {
     const { email } = jwt.verify(req.params.token, process.env.JWT_SECRET);
     // because our emails are all unique
     await User.findOneAndUpdate({ email: email }, { confirmedEmail: true });
-    return res.redirect("http://localhost:3001/login");
+    return res.redirect("https://txtdump.xyz/login");
   } catch (error) {
     console.log(error);
     res.send("Error confirming email");
   }
-
-  //   return res.redirect("http://localhost:3001/login");
 });
 
 // send confirmation email route
@@ -42,7 +40,7 @@ router.post("/send-email", async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
-  const url = `http://localhost:3000/email/confirmation/${emailToken}`;
+  const url = `https://txtdump.xyz/email/confirmation/${emailToken}`;
 
   try {
     let info = await transporter.sendMail({
@@ -88,7 +86,7 @@ router.post("/forgot", async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
-  const url = `http://localhost:3000/email/confirmforget/${emailToken}`;
+  const url = `https://txtdump.xyz/email/confirmforget/${emailToken}`;
 
   try {
     let info = await transporter.sendMail({
@@ -121,7 +119,7 @@ router.get("/confirmforget/:token", async (req, res) => {
     user.password = hashedPassword; // Update the password
     await user.save(); // Save the updated user to the database
 
-    return res.redirect("http://localhost:3001/login");
+    return res.redirect("https://txtdump.xyz/login");
   } catch (error) {
     console.error(error);
     res.status(500).send("Failed to reset password");
