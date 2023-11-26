@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/users");
-const Data = require("../models/data");
+const User = require("../models/users"); // model for user data
+const Data = require("../models/data"); // model for additional user data
 const bcrypt = require("bcrypt"); //used to hash passwords
 const jwt = require("jsonwebtoken"); //authenticates the user
 
+// middleware to parse JSON request bodies
 router.use(express.json());
 
+// route for user signup
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
   // this will be handled on frontend
@@ -24,6 +26,7 @@ router.post("/signup", async (req, res) => {
     return res.status(400).send("Username is already taken");
   }
 
+  // hash the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -49,6 +52,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// route for user login
 router.post("/login", async (req, res) => {
   const { loginType, password } = req.body;
 
