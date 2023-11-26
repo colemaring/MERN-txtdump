@@ -3,6 +3,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 function HeaderBar() {
   const navigate = useNavigate();
@@ -12,13 +14,26 @@ function HeaderBar() {
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand onClick={() => {
-            localStorage.removeItem("listId");
-            localStorage.removeItem("username");
-            localStorage.removeItem("token");
-          }}
-            href="/">TXT DUMP</Navbar.Brand>
-          <Navbar.Text className="mx-2">Signed in as: {username}</Navbar.Text>
+          <Row>
+            <Col sm={"auto"}>
+              <Navbar.Brand
+                onClick={() => {
+                  localStorage.removeItem("listId");
+                  localStorage.removeItem("username");
+                  localStorage.removeItem("token");
+                }}
+                href="/"
+                className="d-flex justify-content-start align-items-center"
+              >
+                TXT DUMP
+              </Navbar.Brand>
+            </Col>
+            <Col sm={"auto"}>
+              <Navbar.Text className="me-2 d-flex justify-content-start align-items-center">
+                Signed in as: {username}
+              </Navbar.Text>
+            </Col>
+          </Row>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto"></Nav>
@@ -35,7 +50,7 @@ function HeaderBar() {
             }}
           >
             LOGOUT&nbsp;&nbsp;
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <i className="fa fa-sign-out" aria-hidden="true"></i>
           </Button>
         </Container>
       </Navbar>

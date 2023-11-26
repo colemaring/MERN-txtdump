@@ -103,9 +103,14 @@ const ExpandedModal = ({
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ fontSize: "1.25rem", fontWeight: "500" }}
+          style={{
+            fontSize: "1.25rem",
+            fontWeight: "500",
+            width: "250px",
+            minWidth: "75px",
+          }}
         />
-        <Dropdown style={{ marginLeft: "2rem" }}>
+        <Dropdown style={{ marginLeft: "2rem", marginRight: "1rem" }}>
           <Dropdown.Toggle variant="outline-success" id="dropdown-basic">
             {selectedLanguageLabel}
           </Dropdown.Toggle>

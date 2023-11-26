@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import NotAPage from "./NotAPage";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
@@ -15,6 +16,7 @@ ReactDOM.render(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<App />} />
+        <Route path="/*" element={<NotAPage/>}/>
       </Routes>
     </Router>
   </React.StrictMode>,
